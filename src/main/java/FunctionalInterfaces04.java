@@ -77,6 +77,9 @@ public class FunctionalInterfaces04 {
         };
 
         biConsumer.accept("i live my life in", 14);
+
+        //constructor reference
+        Supplier<String> stringSupplierReference = String::new;
     }
 
     private static List<Integer> getMappingList(List<Integer> numbers, Function<Integer, Integer> mappingFunction) {
