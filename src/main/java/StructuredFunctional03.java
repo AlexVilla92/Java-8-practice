@@ -1,5 +1,6 @@
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //03 - Playing with streams
 public class StructuredFunctional03 {
@@ -27,7 +28,26 @@ public class StructuredFunctional03 {
         reverseOrderCourses(courses);
         System.out.println("order by length");
         orderByLength(courses);
+        System.out.println("list with even numbers");
+        List<Integer> evenList = listOfEvenNumbers(numbers);
+        System.out.println(evenList);
+
+        System.out.println("list of length courses numbers");
+        List<Integer> lengthList = listOfLengthCourses(courses);
+        System.out.println(lengthList);
     }
+
+    //exercise 11: Create a List with lengths of all course titles.
+    private static List<Integer> listOfLengthCourses(List<String> courses) {
+        return courses.stream().map(course -> course.length()).collect(Collectors.toList());
+    }
+
+    //exercise 10: Create a List with Even Numbers Filtered from the Numbers List
+    private static List<Integer> listOfEvenNumbers(List<Integer> numbers) {
+        return numbers.stream().filter(number -> number % 2 == 0).collect(Collectors.toList());
+    }
+
+
 
     private static void orderByLength(List<String> courses) {
         courses.stream().sorted(Comparator.comparing(String::length)).forEach(System.out::println);
