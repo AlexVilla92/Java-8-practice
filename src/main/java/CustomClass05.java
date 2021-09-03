@@ -88,5 +88,100 @@ public class CustomClass05 {
                 .thenComparingInt(Course::getReviewScore).reversed();
 
         System.out.println(courses.stream().sorted(comparingReviewsAndNumberStudentsDecreasing).collect(Collectors.toList()));
+
+        //skip: skipea los primero n valores, limit: solo toma los primeros n valores, los demas los elimina, seria como el opuesto a skip
+        System.out.println("skip first 3 and limit only 5 ");
+        System.out.println(courses.stream()
+                .sorted(comparingReviewsAndNumberStudentsDecreasing)
+                .skip(3)
+                .limit(5)
+                .collect(Collectors.toList())
+        );
+
+        //takewhile: devuevle todos los objetos, mientras cumplan la condicion, cuando encuentra el primer objeto
+        //que no la cumple, entonces corta la secuencia
+        System.out.println("take while ");
+        System.out.println(courses.stream()
+                .takeWhile(course -> course.getReviewScore() >= 95)
+                .collect(Collectors.toList())
+        );
+
+        //dropWhile: seria el opuesto, no devuelve los elementos que cumplan la condicion, cuando encuentra el primero que
+        //no la cumpla, ya corta la secuencia
+        System.out.println("drop while ");
+        System.out.println(courses.stream()
+                .dropWhile(course -> course.getReviewScore() >= 95)
+                .collect(Collectors.toList())
+
+        );
+
+        //max element
+        System.out.println("max element");
+        System.out.println(courses.stream().max(comparingReviewsAndNumberStudentsDecreasing));
+
+        //min element
+        System.out.println("min element");
+        System.out.println(courses.stream()
+                .min(comparingReviewsAndNumberStudentsDecreasing)
+                .orElse(new Course("java", "backend", 98, 10000))
+        );
+
+        //find first and findany
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .findFirst()
+        );
+
+        //devuelve cualquier valor que haya cumplido la condicion
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .findAny()
+        );
+
+        //devuelve el total de estudiantes que estan los cursos con score mayor a 95
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .mapToInt(Course::getNoOfStudents)
+                .sum()
+        );
+
+        //idem arriba pero devuelve el promedio
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .mapToInt(Course::getNoOfStudents)
+                .average()
+        );
+
+        //cuenta la cantidad de cursos que complen con la condicion del score
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .mapToInt(Course::getNoOfStudents)
+                .count()
+        );
+
+        //devuelve el curso que tiene mas alumnos con score mayor a 95
+        System.out.println(courses.stream()
+                .filter(scoreGreaterThan95)
+                .mapToInt(Course::getNoOfStudents)
+                .max()
+        );
+
+        //groupby: agrupo los cursos por categoria
+        System.out.println(courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory)));
+
+        //agrupo por categoria y cuento
+        System.out.println(courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory, Collectors.counting())));
+
+        //agrupo por categoria y me quedo con el curso que tiene mayor score, de cada categoria
+        System.out.println(courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory,
+                        Collectors.maxBy(Comparator.comparing(Course::getReviewScore)))));
+
+        //agrupo por categoria y listo los cursos solo por el nombre
+        System.out.println(courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory,
+                        Collectors.mapping(Course::getName, Collectors.toList()))));
     }
 }
